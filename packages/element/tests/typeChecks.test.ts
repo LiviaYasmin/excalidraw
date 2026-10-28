@@ -78,7 +78,7 @@ describe("Test TypeChecks", () => {
     ).toBeFalsy();
   });
 //-------CASOS DE TESTE CAIXA BRANCA-----
-//testar arrow e line
+//testar arrow e line, eles tem que passar
 describe("Test isLinearElement", () => {
     it("should return true for arrow and line elements", () => {
       const arrow = API.createElement({ type: "arrow" });
@@ -86,6 +86,14 @@ describe("Test isLinearElement", () => {
 
       const line = API.createElement({ type: "line" });
       expect(isLinearElement(line)).toBe(true);
+    });
+    //testar retangulo e freedraw, eles nao podem passar
+    it("should return false for non-linear elements", () => {
+      const rectangle = API.createElement({ type: "rectangle" });
+      expect(isLinearElement(rectangle)).toBe(false);
+
+      const freedraw = API.createElement({ type: "freedraw" });
+      expect(isLinearElement(freedraw)).toBe(false);
     });
   });
 
