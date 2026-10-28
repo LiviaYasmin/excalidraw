@@ -78,13 +78,14 @@ describe("Test TypeChecks", () => {
     ).toBeFalsy();
   });
 //-------CASOS DE TESTE CAIXA BRANCA-----
+//testar arrow e line
 describe("Test isLinearElement", () => {
     it("should return true for arrow and line elements", () => {
       const arrow = API.createElement({ type: "arrow" });
       expect(isLinearElement(arrow)).toBe(true);
 
       const line = API.createElement({ type: "line" });
-      expect(isLinearElement(arrow)).toBe(true);
+      expect(isLinearElement(line)).toBe(true);
     });
   });
 
