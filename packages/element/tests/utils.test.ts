@@ -47,4 +47,11 @@ describe("isPathALoop", () => {
     expect(isPathALoop(points)).toBe(true);
   });
 
+  // CT06: uma lacuna logo acima do limite deve ser rejeitada
+  it("rejects a closure gap just above the threshold", () => {
+    expect(
+      isPathALoop(pointsWithGap(LINE_CONFIRM_THRESHOLD + 0.001)),
+    ).toBe(false);
+  });
+
 });
