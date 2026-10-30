@@ -423,5 +423,9 @@ export const isPolygonElement = <T extends ExcalidrawElement>(
   // reaproveita isLineElement, que já rejeita null, undefined e tipos não lineares
   // o operador && só consulta polygon se o elemento passar nessa validação
   // a comparação estrita aceita apenas polygon: true
-  return isLineElement(element) && element.polygon === true;
+  return (
+    isLineElement(element) &&
+    element.polygon === true &&
+    element.points.length > 3
+  );
 };
