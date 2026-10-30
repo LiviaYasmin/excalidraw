@@ -121,7 +121,7 @@ describe("isLinearElement - caixa-preta", () => {
     const element = API.createElement({ type: "line" });
     expect(isLinearElement(element)).toBe(true);
   });
-  
+
   // CT03-CT06: estes tipos válidos devem retornar false.
   it("should return false for non-linear element types", () => {
     const elements = [
@@ -136,6 +136,12 @@ describe("isLinearElement - caixa-preta", () => {
     }
   });
 
+  // CT07-CT09: entradas nulas ou ausentes devem retornar false
+  it("should return false for nullish or omitted input", () => {
+    expect(isLinearElement(null)).toBe(false);
+    expect(isLinearElement(undefined)).toBe(false);
+    expect(isLinearElement()).toBe(false);
+  });
 });
 
 
