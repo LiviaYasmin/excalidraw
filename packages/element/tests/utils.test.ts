@@ -51,9 +51,9 @@ describe("isPathALoop", () => {
 
   // uma lacuna logo acima do limite deve ser rejeitada
   it("rejects a closure gap just above the threshold", () => {
-    expect(
-      isPathALoop(pointsWithGap(LINE_CONFIRM_THRESHOLD + 0.001)),
-    ).toBe(false);
+    expect(isPathALoop(pointsWithGap(LINE_CONFIRM_THRESHOLD + 0.001))).toBe(
+      false,
+    );
   });
 
   // com zoom 2 -> testa o limite menor e o primeiro valor acima dele
@@ -89,9 +89,7 @@ describe("isPathALoop", () => {
       ),
     ).toBe(false);
   });
-
 });
-
 
 // -------- CASOS DE TESTE CAIXA BRANCA (isPathALoop) --------
 const createLoopPoints = (gap: number): LocalPoint[] => [
@@ -115,9 +113,9 @@ describe("isPathALoop - Caixa Branca (MC/DC)", () => {
   });
 
   it("should return false when 3 points exceed threshold on default zoom", () => {
-    expect(
-      isPathALoop(createLoopPoints(LINE_CONFIRM_THRESHOLD + 0.001)),
-    ).toBe(false);
+    expect(isPathALoop(createLoopPoints(LINE_CONFIRM_THRESHOLD + 0.001))).toBe(
+      false,
+    );
   });
 
   it("should evaluate D488 true and false branches when zoomed in (zoomValue = 2)", () => {
