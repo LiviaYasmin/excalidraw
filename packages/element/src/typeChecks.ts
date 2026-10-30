@@ -414,21 +414,17 @@ export const isEligibleFrameChildType = (type: ElementOrToolType) => {
   }
 };
 
-
-  // o genérico T preserva o tipo específico recebido pela função
-  // quando ela retorna true, o TS sabe que o elemento é uma linha
+// o genérico T preserva o tipo específico recebido pela função
+// quando ela retorna true, o TS sabe que o elemento é uma linha
 export const isPolygonElement = <T extends ExcalidrawElement>(
   element?: T | null,
 ): element is T & ExcalidrawLineElement => {
   // reaproveita isLineElement, que já rejeita null, undefined e tipos não lineares
   // o operador && só consulta polygon se o elemento passar nessa validação
   // a comparação estrita aceita apenas polygon: true
-  if (!isLineElement(element) || element.polygon !== true) {
-    return false;
-  }
-
   return (
-    element.points.length > 3 &&
-    pointsEqual(element.points[0], element.points[element.points.length - 1])
+    isLineElement(element) &&
+    element.polygon === true &&
+    isValidPolygon(element.points)
   );
 };

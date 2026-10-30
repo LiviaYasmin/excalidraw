@@ -80,68 +80,61 @@ describe("Test TypeChecks", () => {
       ),
     ).toBeFalsy();
 
-//-----------NOVA FUNCAO POLYGON--------------
-describe("TDD", () => {
-    //TESTE 1
-    it("Ciclo 1: true para um elemento linear que seja um poligono fechado", () => {
-      const polygonLine = API.createElement({
-        type: "line",
-        polygon: true,
-        points: [
-          [0, 0],
-          [10, 0],
-          [10, 10],
-          [0, 0],
-        ] as any,
+    //-----------NOVA FUNCAO POLYGON--------------
+    describe("TDD", () => {
+      //TESTE 1
+      it("Ciclo 1: true para um elemento linear que seja um poligono fechado", () => {
+        const polygonLine = API.createElement({
+          type: "line",
+          polygon: true,
+          points: [
+            [0, 0],
+            [10, 0],
+            [10, 10],
+            [0, 0],
+          ] as any,
+        });
+        expect(isPolygonElement(polygonLine)).toBe(true);
       });
-      expect(isPolygonElement(polygonLine)).toBe(true);
+
+      //TESTE 2
+      it("Ciclo 2: false quando o elemento linear for um polygon false", () => {
+        const regularLine = API.createElement({
+          type: "line",
+          polygon: false,
+          points: [
+            [0, 0],
+            [10, 0],
+            [10, 10],
+            [0, 0],
+          ] as any,
+        });
+        expect(isPolygonElement(regularLine)).toBe(false);
+      });
     });
 
-    //TESTE 2
-    it("Ciclo 2: false quando o elemento linear for um polygon false", () => {
-      const regularLine = API.createElement({
-        type: "line",
-        polygon: false,
-        points: [
-          [0, 0],
-          [10, 0],
-          [10, 10],
-          [0, 0],
-        ] as any,
-      });
-      expect(isPolygonElement(regularLine)).toBe(false);
-    });
-  });
-  
-  // TESTE 3 
+    // TESTE 3
     it("Ciclo 3: should return false when element is null or undefined", () => {
       expect(isPolygonElement(null)).toBe(false);
       expect(isPolygonElement(undefined)).toBe(false);
     });
 
-  // TESTE 4
-    it(
-      "Ciclo 4: should return false for non-line elements even if polygon property is present", 
-      () => {
-        const rectangle = {
-          ...API.createElement({ type: "rectangle" }), 
-          polygon: true,
-        } as any;
-        const arrow = API.createElement({ type: "arrow" });
+    // TESTE 4
+    it("Ciclo 4: should return false for non-line elements even if polygon property is present", () => {
+      const rectangle = {
+        ...API.createElement({ type: "rectangle" }),
+        polygon: true,
+      } as any;
+      const arrow = API.createElement({ type: "arrow" });
 
-        expect(isPolygonElement(rectangle)).toBe(false);
-        expect(isPolygonElement(arrow)).toBe(false);
-      },
-    );
-
-
+      expect(isPolygonElement(rectangle)).toBe(false);
+      expect(isPolygonElement(arrow)).toBe(false);
+    });
   });
 
-
-
-//-------CASOS DE TESTE CAIXA BRANCA-----
-//testar arrow e line, eles tem que passar
-describe("Test isLinearElement", () => {
+  //-------CASOS DE TESTE CAIXA BRANCA-----
+  //testar arrow e line, eles tem que passar
+  describe("Test isLinearElement", () => {
     it("should return true for arrow element", () => {
       const arrow = API.createElement({ type: "arrow" });
       expect(isLinearElement(arrow)).toBe(true);
@@ -152,7 +145,7 @@ describe("Test isLinearElement", () => {
       expect(isLinearElement(line)).toBe(true);
     });
 
-       //testar retangulo e freedraw, eles nao podem passar
+    //testar retangulo e freedraw, eles nao podem passar
     it("should return false for non-linear elements", () => {
       const rectangle = API.createElement({ type: "rectangle" });
       const freedraw = API.createElement({ type: "freedraw" });
@@ -161,13 +154,12 @@ describe("Test isLinearElement", () => {
       expect(isLinearElement(freedraw)).toBe(false);
     });
 
-      //testar null e undefined, eles nao podem passar
+    //testar null e undefined, eles nao podem passar
     it("should return false when element is null or undefined", () => {
       expect(isLinearElement(null)).toBe(false);
       expect(isLinearElement(undefined)).toBe(false);
     });
   });
-
 });
 
 describe("Test NonDeleted type", () => {
@@ -225,10 +217,7 @@ describe("isPolygonElement - TDD Gabriela", () => {
         points,
       });
 
-      expect(
-        isPolygonElement(line),
-        `Quantidade de pontos: ${points.length}`,
-      ).toBe(false);
+      expect(isPolygonElement(line)).toBe(false);
     }
   });
 
@@ -252,10 +241,7 @@ describe("isPolygonElement - TDD Gabriela", () => {
         ],
       });
 
-      expect(
-        isPolygonElement(line),
-        `Ponto final: ${endPoint.join(", ")}`,
-      ).toBe(false);
+      expect(isPolygonElement(line)).toBe(false);
     }
 
     const nearlyClosedLine = API.createElement({
