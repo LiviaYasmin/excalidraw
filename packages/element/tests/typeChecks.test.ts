@@ -4,6 +4,7 @@ import { newElementWith } from "../src/mutateElement";
 import {
   hasBoundTextElement,
   isLinearElement,
+  isPolygonElement,
   isTextElement,
 } from "../src/typeChecks";
 
@@ -76,7 +77,29 @@ describe("Test TypeChecks", () => {
         }),
       ),
     ).toBeFalsy();
+
+//-----------NOVA FUNCAO POLYGON--------------
+describe("TDD", () => {
+    it("Ciclo 1: true para um elemento linear que seja um poligono fechado", () => {
+      const polygonLine = API.createElement({
+        type: "line",
+        polygon: true,
+        points: [
+          [0, 0],
+          [10, 0],
+          [10, 10],
+          [0, 0],
+        ] as any,
+      });
+      expect(isPolygonElement(polygonLine)).toBe(true);
+    });
   });
+  
+
+  });
+
+
+
 //-------CASOS DE TESTE CAIXA BRANCA-----
 //testar arrow e line, eles tem que passar
 describe("Test isLinearElement", () => {
