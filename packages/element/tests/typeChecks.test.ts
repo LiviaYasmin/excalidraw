@@ -111,6 +111,10 @@ describe("TDD", () => {
     });
   });
   
+    it("Ciclo 3: should return false when element is null or undefined", () => {
+      expect(isPolygonElement(null)).toBe(false);
+      expect(isPolygonElement(undefined)).toBe(false);
+    });
 
   });
 
