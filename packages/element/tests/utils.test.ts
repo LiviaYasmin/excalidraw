@@ -91,3 +91,21 @@ describe("isPathALoop", () => {
   });
 
 });
+
+
+// -------- CASOS DE TESTE CAIXA BRANCA (isPathALoop) --------
+const createLoopPoints = (gap: number): LocalPoint[] => [
+  pointFrom<LocalPoint>(0, 0),
+  pointFrom<LocalPoint>(10, 10),
+  pointFrom<LocalPoint>(0, gap),
+];
+
+describe("isPathALoop - Caixa Branca (MC/DC)", () => {
+  it("should return false when path has fewer than 3 points", () => {
+    expect(isPathALoop([])).toBe(false);
+    expect(isPathALoop([pointFrom<LocalPoint>(0, 0)])).toBe(false);
+    expect(
+      isPathALoop([pointFrom<LocalPoint>(0, 0), pointFrom<LocalPoint>(0, 0)]),
+    ).toBe(false);
+  });
+});
