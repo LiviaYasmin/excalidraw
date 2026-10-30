@@ -243,4 +243,28 @@ describe('restoreElements - caixa preta', () => {
     const [r] = run([make('rectangle', { frameId: 'nao-existe' })]);
     expect(r.frameId).toBe('nao-existe');
   });
+
+  it('CT24: deleteInvisibleElements marca invisiveis como excluidos', () => {
+    const result = run(
+      [
+        make('rectangle', { width: 0, height: 0 }),
+        make('arrow', { points: [[0, 0], [0.02, 0.05]], x: 0, y: 0 }),
+      ],
+      null,
+      { deleteInvisibleElements: true },
+    );
+    expect(result.map((e) => e.isDeleted)).toEqual([true, true]);
+  });
+
+  it('CT25: deleteInvisibleElements mantem elemento visivel', () => {
+    const [r] = run([make('rectangle')], null, {
+      deleteInvisibleElements: true,
+    });
+    expect(r.isDeleted).toBe(false);
+  });
+
+  it('CT26: sem a opcao o invisivel e mantido', () => {
+    const [r] = run([make('rectangle', { width: 0, height: 0 })]);
+    expect(r.isDeleted).toBe(false);
+  });
 });
