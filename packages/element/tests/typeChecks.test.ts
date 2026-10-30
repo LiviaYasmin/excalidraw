@@ -1,4 +1,4 @@
-import { pointFrom, type LocalPoint } from "@excalidraw/math";
+import { pointFrom, PRECISION, type LocalPoint } from "@excalidraw/math";
 
 import { API } from "@excalidraw/excalidraw/tests/helpers/api";
 
@@ -230,5 +230,45 @@ describe("isPolygonElement - TDD Gabriela", () => {
         `Quantidade de pontos: ${points.length}`,
       ).toBe(false);
     }
+  });
+
+  it("Ciclo 6: verifica o fechamento dos pontos com a tolerancia do projeto", () => {
+    const openEndPoints: LocalPoint[] = [
+      pointFrom<LocalPoint>(20, 20),
+      pointFrom<LocalPoint>(10, 0),
+      pointFrom<LocalPoint>(0, 10),
+      pointFrom<LocalPoint>(PRECISION, 0),
+    ];
+
+    for (const endPoint of openEndPoints) {
+      const line = API.createElement({
+        type: "line",
+        polygon: true,
+        points: [
+          pointFrom<LocalPoint>(0, 0),
+          pointFrom<LocalPoint>(10, 0),
+          pointFrom<LocalPoint>(10, 10),
+          endPoint,
+        ],
+      });
+
+      expect(
+        isPolygonElement(line),
+        `Ponto final: ${endPoint.join(", ")}`,
+      ).toBe(false);
+    }
+
+    const nearlyClosedLine = API.createElement({
+      type: "line",
+      polygon: true,
+      points: [
+        pointFrom<LocalPoint>(0, 0),
+        pointFrom<LocalPoint>(10, 0),
+        pointFrom<LocalPoint>(10, 10),
+        pointFrom<LocalPoint>(PRECISION / 2, PRECISION / 2),
+      ],
+    });
+
+    expect(isPolygonElement(nearlyClosedLine)).toBe(true);
   });
 });
