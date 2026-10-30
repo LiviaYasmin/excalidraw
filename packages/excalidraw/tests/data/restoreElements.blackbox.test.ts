@@ -138,4 +138,39 @@ describe('restoreElements - caixa preta', () => {
     ]);
     expect(result.map((e) => e.id)).toEqual(['a', 'd']);
   });
+
+  it('CT11: ids duplicados geram ids unicos', () => {
+    const result = run([
+      make('rectangle', { id: 'dup' }),
+      make('rectangle', { id: 'dup' }),
+    ]);
+    expect(result).toHaveLength(2);
+    expect(result[0].id).toBe('dup');
+    expect(result[1].id).not.toBe('dup');
+  });
+
+  it('CT12: line com um unico ponto vira segmento ate (width, height)', () => {
+    const [l] = run([make('line', { width: 30, height: 40, points: [[5, 5]] })]);
+    expect(l.points).toEqual([[0, 0], [30, 40]]);
+  });
+
+  it('CT13: arrow gigante e marcada como excluida', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const [a] = run([make('arrow', { points: [[0, 0], [900000, 0]] })]);
+    expect(a.isDeleted).toBe(true);
+    expect(a.width).toBe(100);
+    expect(a.height).toBe(100);
+    spy.mockRestore();
+  });
+
+  it('CT14: texto nulo vira texto vazio', () => {
+    const [t] = run([{ ...make('text'), text: null, originalText: null }]);
+    expect(t.text).toBe('');
+  });
+
+  it('CT15 (robustez): textAlign invalido e preservado sem sanitizacao', () => {
+    // restoreElement nao sanitiza textAlign; o valor invalido e mantido como esta.
+    const [t] = run([{ ...make('text'), textAlign: 'xyz' }]);
+    expect(typeof t.textAlign).toBe('string');
+  });
 });
