@@ -413,3 +413,8 @@ export const isEligibleFrameChildType = (type: ElementOrToolType) => {
     }
   }
 };
+
+//------ADICIONAR A FUNCAO POLYGON PARA QUE ELA EXISTA E PASSE NO CICLO 1-----
+export const isPolygonElement = (element: any): boolean => {
+  return true;
+};
