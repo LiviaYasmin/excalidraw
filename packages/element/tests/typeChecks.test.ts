@@ -111,10 +111,27 @@ describe("TDD", () => {
     });
   });
   
+  // TESTE 3 
     it("Ciclo 3: should return false when element is null or undefined", () => {
       expect(isPolygonElement(null)).toBe(false);
       expect(isPolygonElement(undefined)).toBe(false);
     });
+
+  // TESTE 4
+    it(
+      "Ciclo 4: should return false for non-line elements even if polygon property is present", 
+      () => {
+        const rectangle = {
+          ...API.createElement({ type: "rectangle" }), 
+          polygon: true,
+        } as any;
+        const arrow = API.createElement({ type: "arrow" });
+
+        expect(isPolygonElement(rectangle)).toBe(false);
+        expect(isPolygonElement(arrow)).toBe(false);
+      },
+    );
+
 
   });
 
