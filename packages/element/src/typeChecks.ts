@@ -420,6 +420,10 @@ export const isPolygonElement = (element: any): boolean => {
   if (element == null) {
     return false;
   }
+  // GREEN do ciclo 4
+  if (element.type !== "line") {
+    return false;
+  }
   //Correcao da logica para que passe no Ciclo 2 e retirada do return pro refactor
   return element.polygon === true;
 };
