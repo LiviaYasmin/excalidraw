@@ -414,16 +414,14 @@ export const isEligibleFrameChildType = (type: ElementOrToolType) => {
   }
 };
 
-//------ADICIONAR A FUNCAO POLYGON PARA QUE ELA EXISTA E PASSE NO CICLO 1-----
-export const isPolygonElement = (element: any): boolean => {
-  // GREEN do ciclo 3 
-  if (element == null) {
-    return false;
-  }
-  // GREEN do ciclo 4
-  if (element.type !== "line") {
-    return false;
-  }
-  //Correcao da logica para que passe no Ciclo 2 e retirada do return pro refactor
-  return element.polygon === true;
+
+  // o genérico T preserva o tipo específico recebido pela função
+  // quando ela retorna true, o TS sabe que o elemento é uma linha
+export const isPolygonElement = <T extends ExcalidrawElement>(
+  element?: T | null,
+): element is T & ExcalidrawLineElement => {
+  // reaproveita isLineElement, que já rejeita null, undefined e tipos não lineares
+  // o operador && só consulta polygon se o elemento passar nessa validação
+  // a comparação estrita aceita apenas polygon: true
+  return isLineElement(element) && element.polygon === true;
 };
