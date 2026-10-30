@@ -91,4 +91,28 @@ describe('restoreElements - caixa preta', () => {
       locked: true,
     });
   });
+
+  it('CT04: array vazio', () => {
+    expect(run([])).toEqual([]);
+  });
+
+  it('CT05: null', () => {
+    expect(run(null)).toEqual([]);
+  });
+
+  it('CT06: undefined', () => {
+    expect(run(undefined)).toEqual([]);
+  });
+
+  it('CT30 (robustez): targetElements que nao e array lanca TypeError', () => {
+    // A assinatura do tipo aceita apenas array/null/undefined; passar um objeto
+    // nao-array e comportamento fora do contrato e causa TypeError internamente.
+    expect(() => run({})).toThrow(TypeError);
+  });
+
+  it('CT31 (robustez): array com entrada nula lanca TypeError', () => {
+    // null dentro do array causa TypeError em arrayToMap, pois o codigo tenta
+    // acessar element.id sem checar null. Comportamento fora do contrato publico.
+    expect(() => run([null, make('rectangle', { id: 'a' })])).toThrow(TypeError);
+  });
 });
