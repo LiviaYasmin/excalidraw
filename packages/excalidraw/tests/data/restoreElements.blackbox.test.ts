@@ -267,4 +267,65 @@ describe('restoreElements - caixa preta', () => {
     const [r] = run([make('rectangle', { width: 0, height: 0 })]);
     expect(r.isDeleted).toBe(false);
   });
+
+  const staleText = () =>
+    make('text', { id: 't1', text: 'hello world', width: 9999, height: 9999 });
+
+  it('CT27: refreshDimensions com repairBindings recalcula', () => {
+    const [t] = run([staleText()], null, {
+      refreshDimensions: true,
+      repairBindings: true,
+    });
+    expect(t.width).not.toBe(9999);
+    expect(t.height).not.toBe(9999);
+  });
+
+  it('CT28: refreshDimensions sem repairBindings nao recalcula (bloco nao executado)', () => {
+    // O bloco de refreshDimensions so e executado quando repairBindings=true.
+    // Sem ele, a funcao retorna antes de chegar nesse trecho.
+    const [t] = run([staleText()], null, { refreshDimensions: true });
+    expect(t.width).toBe(9999);
+    expect(t.height).toBe(9999);
+  });
+
+  it('CT29: refreshDimensions false preserva', () => {
+    const [t] = run([staleText()], null, {
+      refreshDimensions: false,
+      repairBindings: true,
+    });
+    expect(t.width).toBe(9999);
+    expect(t.height).toBe(9999);
+  });
+
+  // complementares (caixa-branca)
+  it('CW1: retangulo nao e alterado por refreshDimensions', () => {
+    const [r] = run([make('rectangle', { width: 123, height: 45 })], null, {
+      refreshDimensions: true,
+      repairBindings: true,
+    });
+    expect(r.width).toBe(123);
+    expect(r.height).toBe(45);
+  });
+
+  it('CW2: startBinding para id inexistente e anulado', () => {
+    const [a] = run(
+      [make('arrow', { startBinding: binding('ghost') })],
+      null,
+      { repairBindings: true },
+    );
+    expect(a.startBinding).toBeNull();
+  });
+
+  it('CW3: seta sem startBinding continua sem', () => {
+    const [a] = run([make('arrow')], null, { repairBindings: true });
+    expect(a.startBinding).toBeNull();
+  });
+
+  it('CW4: startBinding para elemento existente e mantido', () => {
+    const rect = make('rectangle', { id: 'r1' });
+    const arrow = make('arrow', { startBinding: binding('r1') });
+    const result = run([rect, arrow], null, { repairBindings: true });
+    const a = result.find((e) => e.type === 'arrow');
+    expect(a.startBinding?.elementId).toBe('r1');
+  });
 });
