@@ -115,4 +115,27 @@ describe('restoreElements - caixa preta', () => {
     // acessar element.id sem checar null. Comportamento fora do contrato publico.
     expect(() => run([null, make('rectangle', { id: 'a' })])).toThrow(TypeError);
   });
+
+  it('CT07: tipo legado draw vira line', () => {
+    const [r] = run([{ ...make('line'), type: 'draw' }]);
+    expect(r.type).toBe('line');
+  });
+
+  it('CT08: selection e descartado', () => {
+    expect(run([{ type: 'selection' }])).toEqual([]);
+  });
+
+  it('CT09: tipo desconhecido e descartado', () => {
+    expect(run([{ ...make('rectangle'), type: 'foo' }])).toEqual([]);
+  });
+
+  it('CT10: mistura de validos e descartaveis', () => {
+    const result = run([
+      make('rectangle', { id: 'a' }),
+      { type: 'selection' },
+      { ...make('rectangle', { id: 'c' }), type: 'foo' },
+      make('text', { id: 'd' }),
+    ]);
+    expect(result.map((e) => e.id)).toEqual(['a', 'd']);
+  });
 });
