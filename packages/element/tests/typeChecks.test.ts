@@ -1,3 +1,5 @@
+import { pointFrom, type LocalPoint } from "@excalidraw/math";
+
 import { API } from "@excalidraw/excalidraw/tests/helpers/api";
 
 import { newElementWith } from "../src/mutateElement";
@@ -200,5 +202,33 @@ describe("Test NonDeleted type", () => {
 
     expect(textElements.length).toBe(1);
     expect(linearElements.length).toBe(1);
+  });
+});
+
+describe("isPolygonElement - TDD Gabriela", () => {
+  it("Ciclo 5: rejeita linhas com polygon true e menos de quatro pontos", () => {
+    const pointSets: LocalPoint[][] = [
+      [],
+      [pointFrom<LocalPoint>(0, 0)],
+      [pointFrom<LocalPoint>(0, 0), pointFrom<LocalPoint>(10, 10)],
+      [
+        pointFrom<LocalPoint>(0, 0),
+        pointFrom<LocalPoint>(10, 0),
+        pointFrom<LocalPoint>(0, 0),
+      ],
+    ];
+
+    for (const points of pointSets) {
+      const line = API.createElement({
+        type: "line",
+        polygon: true,
+        points,
+      });
+
+      expect(
+        isPolygonElement(line),
+        `Quantidade de pontos: ${points.length}`,
+      ).toBe(false);
+    }
   });
 });
