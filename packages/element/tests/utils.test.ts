@@ -51,9 +51,9 @@ describe("isPathALoop", () => {
 
   // uma lacuna logo acima do limite deve ser rejeitada
   it("rejects a closure gap just above the threshold", () => {
-    expect(
-      isPathALoop(pointsWithGap(LINE_CONFIRM_THRESHOLD + 0.001)),
-    ).toBe(false);
+    expect(isPathALoop(pointsWithGap(LINE_CONFIRM_THRESHOLD + 0.001))).toBe(
+      false,
+    );
   });
 
   // com zoom 2 -> testa o limite menor e o primeiro valor acima dele
@@ -89,5 +89,64 @@ describe("isPathALoop", () => {
       ),
     ).toBe(false);
   });
+});
 
+// -------- CASOS DE TESTE CAIXA BRANCA (isPathALoop) --------
+const createLoopPoints = (gap: number): LocalPoint[] => [
+  pointFrom<LocalPoint>(0, 0),
+  pointFrom<LocalPoint>(10, 10),
+  pointFrom<LocalPoint>(0, gap),
+];
+
+describe("isPathALoop - Caixa Branca (MC/DC)", () => {
+  it("should return false when path has fewer than 3 points", () => {
+    expect(isPathALoop([])).toBe(false);
+    expect(isPathALoop([pointFrom<LocalPoint>(0, 0)])).toBe(false);
+    expect(
+      isPathALoop([pointFrom<LocalPoint>(0, 0), pointFrom<LocalPoint>(0, 0)]),
+    ).toBe(false);
+  });
+
+  it("should return true when 3 points are within threshold on default zoom", () => {
+    expect(isPathALoop(createLoopPoints(0))).toBe(true);
+    expect(isPathALoop(createLoopPoints(LINE_CONFIRM_THRESHOLD))).toBe(true);
+  });
+
+  it("should return false when 3 points exceed threshold on default zoom", () => {
+    expect(isPathALoop(createLoopPoints(LINE_CONFIRM_THRESHOLD + 0.001))).toBe(
+      false,
+    );
+  });
+
+  it("should evaluate D488 true and false branches when zoomed in (zoomValue = 2)", () => {
+    expect(
+      isPathALoop(
+        createLoopPoints(LINE_CONFIRM_THRESHOLD / 2),
+        2 as NormalizedZoomValue,
+      ),
+    ).toBe(true);
+
+    expect(
+      isPathALoop(
+        createLoopPoints(LINE_CONFIRM_THRESHOLD / 2 + 0.001),
+        2 as NormalizedZoomValue,
+      ),
+    ).toBe(false);
+  });
+
+  it("should evaluate D488 true and false branches when zoomed out (zoomValue = 0.5)", () => {
+    expect(
+      isPathALoop(
+        createLoopPoints(LINE_CONFIRM_THRESHOLD * 2),
+        0.5 as NormalizedZoomValue,
+      ),
+    ).toBe(true);
+
+    expect(
+      isPathALoop(
+        createLoopPoints(LINE_CONFIRM_THRESHOLD * 2 + 0.001),
+        0.5 as NormalizedZoomValue,
+      ),
+    ).toBe(false);
+  });
 });
