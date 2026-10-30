@@ -113,4 +113,10 @@ describe("isPathALoop - Caixa Branca (MC/DC)", () => {
     expect(isPathALoop(createLoopPoints(0))).toBe(true);
     expect(isPathALoop(createLoopPoints(LINE_CONFIRM_THRESHOLD))).toBe(true);
   });
+
+  it("should return false when 3 points exceed threshold on default zoom", () => {
+    expect(
+      isPathALoop(createLoopPoints(LINE_CONFIRM_THRESHOLD + 0.001)),
+    ).toBe(false);
+  });
 });
