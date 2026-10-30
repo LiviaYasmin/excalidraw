@@ -119,4 +119,36 @@ describe("isPathALoop - Caixa Branca (MC/DC)", () => {
       isPathALoop(createLoopPoints(LINE_CONFIRM_THRESHOLD + 0.001)),
     ).toBe(false);
   });
+
+  it("should evaluate D488 true and false branches when zoomed in (zoomValue = 2)", () => {
+    expect(
+      isPathALoop(
+        createLoopPoints(LINE_CONFIRM_THRESHOLD / 2),
+        2 as NormalizedZoomValue,
+      ),
+    ).toBe(true);
+
+    expect(
+      isPathALoop(
+        createLoopPoints(LINE_CONFIRM_THRESHOLD / 2 + 0.001),
+        2 as NormalizedZoomValue,
+      ),
+    ).toBe(false);
+  });
+
+  it("should evaluate D488 true and false branches when zoomed out (zoomValue = 0.5)", () => {
+    expect(
+      isPathALoop(
+        createLoopPoints(LINE_CONFIRM_THRESHOLD * 2),
+        0.5 as NormalizedZoomValue,
+      ),
+    ).toBe(true);
+
+    expect(
+      isPathALoop(
+        createLoopPoints(LINE_CONFIRM_THRESHOLD * 2 + 0.001),
+        0.5 as NormalizedZoomValue,
+      ),
+    ).toBe(false);
+  });
 });
