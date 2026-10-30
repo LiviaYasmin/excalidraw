@@ -1,12 +1,12 @@
 import { pointFrom } from "@excalidraw/math";
 
-import type { LocalPoint } from "@excalidraw/math";
-
-import { isPathALoop } from "../src/utils";
-
 import { LINE_CONFIRM_THRESHOLD } from "@excalidraw/common";
 
+import type { LocalPoint } from "@excalidraw/math";
+
 import type { NormalizedZoomValue } from "@excalidraw/excalidraw/types";
+
+import { isPathALoop } from "../src/utils";
 
 const pointsWithGap = (gap: number): LocalPoint[] => [
   pointFrom<LocalPoint>(0, 0),
