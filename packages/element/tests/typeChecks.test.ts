@@ -77,9 +77,9 @@ describe("Test TypeChecks", () => {
       ),
     ).toBeFalsy();
   });
-//-------CASOS DE TESTE CAIXA BRANCA-----
-//testar arrow e line, eles tem que passar
-describe("Test isLinearElement", () => {
+  //-------CASOS DE TESTE CAIXA BRANCA-----
+  //testar arrow e line, eles tem que passar
+  describe("Test isLinearElement", () => {
     it("should return true for arrow element", () => {
       const arrow = API.createElement({ type: "arrow" });
       expect(isLinearElement(arrow)).toBe(true);
@@ -90,7 +90,7 @@ describe("Test isLinearElement", () => {
       expect(isLinearElement(line)).toBe(true);
     });
 
-       //testar retangulo e freedraw, eles nao podem passar
+    //testar retangulo e freedraw, eles nao podem passar
     it("should return false for non-linear elements", () => {
       const rectangle = API.createElement({ type: "rectangle" });
       const freedraw = API.createElement({ type: "freedraw" });
@@ -99,13 +99,12 @@ describe("Test isLinearElement", () => {
       expect(isLinearElement(freedraw)).toBe(false);
     });
 
-      //testar null e undefined, eles nao podem passar
+    //testar null e undefined, eles nao podem passar
     it("should return false when element is null or undefined", () => {
       expect(isLinearElement(null)).toBe(false);
       expect(isLinearElement(undefined)).toBe(false);
     });
   });
-
 });
 
 //----------CASOS DE TESTE CAIXA PRETA------------
@@ -143,7 +142,6 @@ describe("isLinearElement - caixa-preta", () => {
     expect(isLinearElement()).toBe(false);
   });
 });
-
 
 describe("Test NonDeleted type", () => {
   it("should only allow `isDeleted: false` elements", () => {
