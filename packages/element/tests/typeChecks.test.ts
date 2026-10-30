@@ -108,6 +108,22 @@ describe("Test isLinearElement", () => {
 
 });
 
+//----------CASOS DE TESTE CAIXA PRETA------------
+describe("isLinearElement - caixa-preta", () => {
+  // CT01: arrow pertence à classe linear e deve retornar true
+  it("should return true for arrow elements", () => {
+    const element = API.createElement({ type: "arrow" });
+    expect(isLinearElement(element)).toBe(true);
+  });
+
+  // CT02: line pertence à classe linear e deve retornar true
+  it("should return true for line elements", () => {
+    const element = API.createElement({ type: "line" });
+    expect(isLinearElement(element)).toBe(true);
+  });
+});
+
+
 describe("Test NonDeleted type", () => {
   it("should only allow `isDeleted: false` elements", () => {
     const element = API.createElement({ type: "rectangle" });
