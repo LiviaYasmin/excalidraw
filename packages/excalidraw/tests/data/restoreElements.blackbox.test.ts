@@ -173,4 +173,34 @@ describe('restoreElements - caixa preta', () => {
     const [t] = run([{ ...make('text'), textAlign: 'xyz' }]);
     expect(typeof t.textAlign).toBe('string');
   });
+
+  it('CT16: id em comum com existingElements nao bumpa versao no caso geral', () => {
+    // bumpVersion a partir do existingElements so ocorre quando deleteInvisibleElements
+    // marca o elemento como excluido (ver CT17). No caso geral a versao parte do
+    // elemento restaurado, nao do elemento local.
+    const local = [make('rectangle', { id: 'a', version: 5, versionNonce: 111 })];
+    const [r] = run([make('rectangle', { id: 'a', version: 1 })], local);
+    expect(r.version).toBeGreaterThanOrEqual(1);
+  });
+
+  it('CT17: invisivel com local de mesmo id parte da versao local', () => {
+    const local = [make('rectangle', { id: 'a', version: 5, versionNonce: 111 })];
+    const [r] = run(
+      [make('rectangle', { id: 'a', width: 0, height: 0 })],
+      local,
+      { deleteInvisibleElements: true },
+    );
+    expect(r.isDeleted).toBe(true);
+    expect(r.version).toBeGreaterThan(5);
+  });
+
+  it('CT18: local de outro id nao influencia a versao', () => {
+    const local = [make('rectangle', { id: 'x', version: 99 })];
+    const [r] = run(
+      [make('rectangle', { id: 'a', width: 0, height: 0 })],
+      local,
+      { deleteInvisibleElements: true },
+    );
+    expect(r.version).toBeLessThan(99);
+  });
 });
