@@ -80,6 +80,7 @@ describe("Test TypeChecks", () => {
 
 //-----------NOVA FUNCAO POLYGON--------------
 describe("TDD", () => {
+    //TESTE 1
     it("Ciclo 1: true para um elemento linear que seja um poligono fechado", () => {
       const polygonLine = API.createElement({
         type: "line",
@@ -92,6 +93,21 @@ describe("TDD", () => {
         ] as any,
       });
       expect(isPolygonElement(polygonLine)).toBe(true);
+    });
+
+    //TESTE 2
+    it("Ciclo 2: false quando o elemento linear for um polygon false", () => {
+      const regularLine = API.createElement({
+        type: "line",
+        polygon: false,
+        points: [
+          [0, 0],
+          [10, 0],
+          [10, 10],
+          [0, 0],
+        ] as any,
+      });
+      expect(isPolygonElement(regularLine)).toBe(false);
     });
   });
   
