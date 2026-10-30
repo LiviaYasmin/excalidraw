@@ -1,12 +1,12 @@
 import { pointFrom } from "@excalidraw/math";
 
-import type { LocalPoint } from "@excalidraw/math";
-
-import { isPathALoop } from "../src/utils";
-
 import { LINE_CONFIRM_THRESHOLD } from "@excalidraw/common";
 
+import type { LocalPoint } from "@excalidraw/math";
+
 import type { NormalizedZoomValue } from "@excalidraw/excalidraw/types";
+
+import { isPathALoop } from "../src/utils";
 
 const pointsWithGap = (gap: number): LocalPoint[] => [
   pointFrom<LocalPoint>(0, 0),
@@ -51,9 +51,9 @@ describe("isPathALoop", () => {
 
   // uma lacuna logo acima do limite deve ser rejeitada
   it("rejects a closure gap just above the threshold", () => {
-    expect(
-      isPathALoop(pointsWithGap(LINE_CONFIRM_THRESHOLD + 0.001)),
-    ).toBe(false);
+    expect(isPathALoop(pointsWithGap(LINE_CONFIRM_THRESHOLD + 0.001))).toBe(
+      false,
+    );
   });
 
   // com zoom 2 -> testa o limite menor e o primeiro valor acima dele
@@ -89,5 +89,4 @@ describe("isPathALoop", () => {
       ),
     ).toBe(false);
   });
-
 });
