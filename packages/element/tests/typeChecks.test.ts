@@ -121,6 +121,21 @@ describe("isLinearElement - caixa-preta", () => {
     const element = API.createElement({ type: "line" });
     expect(isLinearElement(element)).toBe(true);
   });
+  
+  // CT03-CT06: estes tipos válidos devem retornar false.
+  it("should return false for non-linear element types", () => {
+    const elements = [
+      API.createElement({ type: "rectangle" }),
+      API.createElement({ type: "ellipse" }),
+      API.createElement({ type: "text", text: "text" }),
+      API.createElement({ type: "freedraw" }),
+    ];
+
+    for (const element of elements) {
+      expect(isLinearElement(element)).toBe(false);
+    }
+  });
+
 });
 
 
