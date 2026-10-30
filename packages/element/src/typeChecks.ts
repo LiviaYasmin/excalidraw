@@ -416,7 +416,10 @@ export const isEligibleFrameChildType = (type: ElementOrToolType) => {
 
 //------ADICIONAR A FUNCAO POLYGON PARA QUE ELA EXISTA E PASSE NO CICLO 1-----
 export const isPolygonElement = (element: any): boolean => {
+  // GREEN do ciclo 3 
+  if (element == null) {
+    return false;
+  }
   //Correcao da logica para que passe no Ciclo 2 e retirada do return pro refactor
   return element.polygon === true;
 };
- 
