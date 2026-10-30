@@ -203,4 +203,44 @@ describe('restoreElements - caixa preta', () => {
     );
     expect(r.version).toBeLessThan(99);
   });
+
+  it('CT19: repairBindings remove boundElements inexistente', () => {
+    const rect = make('rectangle', {
+      id: 'r1',
+      boundElements: [{ id: 'ghost', type: 'text' }],
+    });
+    const [r] = run([rect], null, { repairBindings: true });
+    expect(r.boundElements).toEqual([]);
+  });
+
+  it('CT20: repairBindings limpa containerId inexistente', () => {
+    const txt = make('text', { id: 't1', containerId: 'nao-existe' });
+    const [t] = run([txt], null, { repairBindings: true });
+    expect(t.containerId).toBeNull();
+  });
+
+  it('CT21: repairBindings preserva vinculo consistente', () => {
+    const rect = make('rectangle', {
+      id: 'r1',
+      boundElements: [{ id: 't1', type: 'text' }],
+    });
+    const txt = make('text', { id: 't1', containerId: 'r1' });
+    const result = run([rect, txt], null, { repairBindings: true });
+    const r = result.find((e) => e.id === 'r1');
+    const t = result.find((e) => e.id === 't1');
+    expect(t.containerId).toBe('r1');
+    expect(r.boundElements).toEqual([{ id: 't1', type: 'text' }]);
+  });
+
+  it('CT22: repairBindings limpa frameId inexistente', () => {
+    const [r] = run([make('rectangle', { frameId: 'nao-existe' })], null, {
+      repairBindings: true,
+    });
+    expect(r.frameId).toBeNull();
+  });
+
+  it('CT23: sem repairBindings o frameId e mantido', () => {
+    const [r] = run([make('rectangle', { frameId: 'nao-existe' })]);
+    expect(r.frameId).toBe('nao-existe');
+  });
 });
