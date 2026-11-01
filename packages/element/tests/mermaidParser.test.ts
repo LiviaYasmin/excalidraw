@@ -25,4 +25,11 @@ describe("parseMermaidToExcalidraw - TDD", () => {
       expect(result.edges[0].source).toBe("A");
     });
   });
+
+  describe("Ciclo 4: Caracteres Não Suportados (Emojis/Símbolos)", () => {
+    it("deve remover caracteres não suportados/inválidos da string do Mermaid", () => {
+      const result = parseMermaidToExcalidraw("graph TD; A --> B 🛑;");
+      expect(result.elements[1].text).not.toContain("🛑");
+    });
+  });
 });
