@@ -77,8 +77,9 @@ const extractEdges = (input: string): MermaidEdge[] => {
 };
 
 const sanitizeMermaidString = (rawInput: string): string => {
-  const str = rawInput.replace(/\s+/g, " ").trim();
-  return str.replace("🛑", "");
+  // Remove emojis e caracteres especiais não essenciais ao diagrama
+  const noEmojis = rawInput.replace(/[\u{1F600}-\u{1F6FF}]/gu, "");
+  return noEmojis.replace(/\s+/g, " ").trim();
 };
 
 export const parseMermaidToExcalidraw = (input: string): MermaidResult => {
