@@ -26,11 +26,26 @@ const isValidEdge = (
   target: string,
   nodes: Set<string>,
 ): boolean => {
+  // impede self-loops (nó apontando para si mesmo)
   if (source === target) {
     return false;
   }
-  return nodes.has(source) && nodes.has(target);
+  // impede arestas cegas (pontas que não são nós existentes)
+  if (!nodes.has(source) || !nodes.has(target)) {
+    return false;
+  }
+  return true;
 };
+
+// separa o diagrama em instruções, ignorando a declaração do tipo de gráfico
+const splitStatements = (input: string): string[] =>
+  input
+    .split(";")
+    .map((s) => s.trim())
+    .filter(
+      (s) =>
+        s.length > 0 && !s.startsWith("graph") && !s.startsWith("flowchart"),
+    );
 
 const validateMermaidInput = (input: string) => {
   if (!input || input.trim() === "") {
@@ -49,13 +64,7 @@ const extractNodes = (input: string): MermaidElement[] => {
     elements.push({ id, text });
   }
 
-  const statements = input
-    .split(";")
-    .map((s) => s.trim())
-    .filter(
-      (s) =>
-        s.length > 0 && !s.startsWith("graph") && !s.startsWith("flowchart"),
-    );
+  const statements = splitStatements(input);
 
   for (const statement of statements) {
     if (statement.includes("-->")) {
@@ -77,13 +86,7 @@ const extractEdges = (
 ): MermaidEdge[] => {
   const nodes = new Set(elements.map((e) => e.id));
   const edges: MermaidEdge[] = [];
-  const statements = input
-    .split(";")
-    .map((s) => s.trim())
-    .filter(
-      (s) =>
-        s.length > 0 && !s.startsWith("graph") && !s.startsWith("flowchart"),
-    );
+  const statements = splitStatements(input);
 
   for (const statement of statements) {
     if (statement.includes("-->")) {
