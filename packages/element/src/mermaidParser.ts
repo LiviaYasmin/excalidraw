@@ -31,16 +31,60 @@ const extractNodes = (input: string): MermaidElement[] => {
     const text = rawLabel || DEFAULT_NODE_LABEL;
     elements.push({ id, text });
   }
+
+  const statements = input
+    .split(";")
+    .map((s) => s.trim())
+    .filter(
+      (s) =>
+        s.length > 0 && !s.startsWith("graph") && !s.startsWith("flowchart"),
+    );
+
+  for (const statement of statements) {
+    if (statement.includes("-->")) {
+      const parts = statement.split("-->").map((s) => s.trim());
+      for (const part of parts) {
+        if (part && !elements.some((e) => e.id === part)) {
+          elements.push({ id: part, text: part });
+        }
+      }
+    }
+  }
+
   return elements;
+};
+
+const extractEdges = (input: string): MermaidEdge[] => {
+  const edges: MermaidEdge[] = [];
+  const statements = input
+    .split(";")
+    .map((s) => s.trim())
+    .filter(
+      (s) =>
+        s.length > 0 && !s.startsWith("graph") && !s.startsWith("flowchart"),
+    );
+
+  for (const statement of statements) {
+    if (statement.includes("-->")) {
+      const [source, target] = statement.split(" --> ");
+      if (source && target) {
+        edges.push({ source, target });
+      }
+    }
+  }
+
+  return edges;
 };
 
 export const parseMermaidToExcalidraw = (input: string): MermaidResult => {
   validateMermaidInput(input);
+  const cleanInput = input.replace(/ {2,}/g, " ");
 
-  const elements = extractNodes(input);
+  const elements = extractNodes(cleanInput);
+  const edges = extractEdges(cleanInput);
 
   return {
     elements,
-    edges: [],
+    edges,
   };
 };
