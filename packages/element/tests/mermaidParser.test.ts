@@ -10,4 +10,11 @@ describe("parseMermaidToExcalidraw - TDD", () => {
       );
     });
   });
+
+  describe("Ciclo 2: Nós Sem Rótulo (Label)", () => {
+    it("deve atribuir um rótulo padrão quando o nó Mermaid não possuir texto", () => {
+      const result = parseMermaidToExcalidraw("graph TD; A[];");
+      expect(result.elements[0].text).toBe("Sem nome");
+    });
+  });
 });
