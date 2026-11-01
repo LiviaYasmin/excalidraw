@@ -17,4 +17,12 @@ describe("parseMermaidToExcalidraw - TDD", () => {
       expect(result.elements[0].text).toBe("Sem nome");
     });
   });
+
+  describe("Ciclo 3: Tratamento de Espaçamentos Anômalos", () => {
+    it("deve processar corretamente relações com excesso de espaços", () => {
+      const result = parseMermaidToExcalidraw("graph TD; A    -->     B;");
+      expect(result.edges.length).toBe(1);
+      expect(result.edges[0].source).toBe("A");
+    });
+  });
 });
