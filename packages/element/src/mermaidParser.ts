@@ -15,6 +15,20 @@ export interface MermaidResult {
 
 const DEFAULT_NODE_LABEL = "Sem nome";
 
+// identificador de nó aceito: letras, números e sublinhado
+const NODE_ID_REGEX = /^[A-Za-z0-9_]+$/;
+
+const isValidNodeId = (id: string): boolean => NODE_ID_REGEX.test(id);
+
+// uma aresta só é válida se as duas pontas forem nós existentes
+const isValidEdge = (
+  source: string,
+  target: string,
+  nodes: Set<string>,
+): boolean => {
+  return nodes.has(source) && nodes.has(target);
+};
+
 const validateMermaidInput = (input: string) => {
   if (!input || input.trim() === "") {
     throw new Error("Input do Mermaid não pode estar vazio");
@@ -44,10 +58,7 @@ const extractNodes = (input: string): MermaidElement[] => {
     if (statement.includes("-->")) {
       const parts = statement.split("-->").map((s) => s.trim());
       for (const part of parts) {
-        if (
-          /^[A-Za-z0-9_]+$/.test(part) &&
-          !elements.some((e) => e.id === part)
-        ) {
+        if (isValidNodeId(part) && !elements.some((e) => e.id === part)) {
           elements.push({ id: part, text: part });
         }
       }
@@ -57,7 +68,11 @@ const extractNodes = (input: string): MermaidElement[] => {
   return elements;
 };
 
-const extractEdges = (input: string): MermaidEdge[] => {
+const extractEdges = (
+  input: string,
+  elements: MermaidElement[],
+): MermaidEdge[] => {
+  const nodes = new Set(elements.map((e) => e.id));
   const edges: MermaidEdge[] = [];
   const statements = input
     .split(";")
@@ -70,12 +85,7 @@ const extractEdges = (input: string): MermaidEdge[] => {
   for (const statement of statements) {
     if (statement.includes("-->")) {
       const [source, target] = statement.split(" --> ");
-      if (
-        source &&
-        target &&
-        /^[A-Za-z0-9_]+$/.test(source) &&
-        /^[A-Za-z0-9_]+$/.test(target)
-      ) {
+      if (isValidEdge(source, target, nodes)) {
         edges.push({ source, target });
       }
     }
@@ -95,7 +105,7 @@ export const parseMermaidToExcalidraw = (input: string): MermaidResult => {
   const cleanInput = sanitizeMermaidString(input);
 
   const elements = extractNodes(cleanInput);
-  const edges = extractEdges(cleanInput);
+  const edges = extractEdges(cleanInput, elements);
 
   return {
     elements,
