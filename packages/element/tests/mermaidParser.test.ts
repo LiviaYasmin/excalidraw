@@ -40,4 +40,12 @@ describe("parseMermaidToExcalidraw - TDD", () => {
       expect(result.elements.map((e) => e.id)).toEqual(["A"]);
     });
   });
+
+  describe("Ciclo 6: Bloqueio de Self-loops", () => {
+    it("deve ignorar relações de self-loop (nó apontando para si mesmo)", () => {
+      const result = parseMermaidToExcalidraw("graph TD; A --> A;");
+      expect(result.edges).toHaveLength(0);
+      expect(result.elements.map((e) => e.id)).toEqual(["A"]);
+    });
+  });
 });
