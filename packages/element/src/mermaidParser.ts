@@ -26,6 +26,9 @@ const isValidEdge = (
   target: string,
   nodes: Set<string>,
 ): boolean => {
+  if (source === target) {
+    return false;
+  }
   return nodes.has(source) && nodes.has(target);
 };
 
