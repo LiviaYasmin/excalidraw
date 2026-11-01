@@ -44,7 +44,10 @@ const extractNodes = (input: string): MermaidElement[] => {
     if (statement.includes("-->")) {
       const parts = statement.split("-->").map((s) => s.trim());
       for (const part of parts) {
-        if (part && !elements.some((e) => e.id === part)) {
+        if (
+          /^[A-Za-z0-9_]+$/.test(part) &&
+          !elements.some((e) => e.id === part)
+        ) {
           elements.push({ id: part, text: part });
         }
       }
@@ -67,7 +70,12 @@ const extractEdges = (input: string): MermaidEdge[] => {
   for (const statement of statements) {
     if (statement.includes("-->")) {
       const [source, target] = statement.split(" --> ");
-      if (source && target) {
+      if (
+        source &&
+        target &&
+        /^[A-Za-z0-9_]+$/.test(source) &&
+        /^[A-Za-z0-9_]+$/.test(target)
+      ) {
         edges.push({ source, target });
       }
     }
