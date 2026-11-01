@@ -77,7 +77,8 @@ const extractEdges = (input: string): MermaidEdge[] => {
 };
 
 const sanitizeMermaidString = (rawInput: string): string => {
-  return rawInput.replace(/\s+/g, " ").trim();
+  const str = rawInput.replace(/\s+/g, " ").trim();
+  return str.replace("🛑", "");
 };
 
 export const parseMermaidToExcalidraw = (input: string): MermaidResult => {
