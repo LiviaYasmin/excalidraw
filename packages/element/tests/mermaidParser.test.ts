@@ -32,4 +32,12 @@ describe("parseMermaidToExcalidraw - TDD", () => {
       expect(result.elements[1].text).not.toContain("🛑");
     });
   });
+
+  describe("Ciclo 5: Arestas Malformadas", () => {
+    it("deve ignorar arestas cujo destino não é um nó válido", () => {
+      const result = parseMermaidToExcalidraw("graph TD; A --> ?!;");
+      expect(result.edges).toHaveLength(0);
+      expect(result.elements.map((e) => e.id)).toEqual(["A"]);
+    });
+  });
 });
