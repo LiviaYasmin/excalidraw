@@ -1,16 +1,23 @@
 [
   {
-    "path": "dist/excalidraw.production.min.js",
+    "name": "Production ESM entry",
+    "path": "dist/prod/index.js",
+    "webpack": false,
+    "running": false,
     "limit": "340 kB"
   },
   {
-    "path": "dist/excalidraw-assets/locales",
-    "name": "dist/excalidraw-assets/locales",
+    "name": "Production locales",
+    "path": "dist/prod/locales/**/*.js",
+    "webpack": false,
+    "running": false,
     "limit": "290 kB"
   },
   {
-    "path": "dist/excalidraw-assets/vendor-*.js",
-    "name": "dist/excalidraw-assets/vendor*.js",
+    "name": "Production shared and lazy-loaded chunks",
+    "path": ["dist/prod/**/*.js", "!dist/prod/index.js", "!dist/prod/locales/**/*.js"],
+    "webpack": false,
+    "running": false,
     "limit": "900 kB"
   }
 ]
