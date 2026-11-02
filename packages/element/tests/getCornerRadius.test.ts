@@ -38,9 +38,9 @@ describe("getCornerRadius - caixa preta", () => {
 
   // CT07: tamanho zero não gera raio
   it("CT07: returns 0 for size 0 with adaptive roundness", () => {
-    expect(
-      getCornerRadius(0, rect({ type: ROUNDNESS.ADAPTIVE_RADIUS })),
-    ).toBe(0);
+    expect(getCornerRadius(0, rect({ type: ROUNDNESS.ADAPTIVE_RADIUS }))).toBe(
+      0,
+    );
   });
 
   // CT08 a CT10: adaptativo com valor próprio (10px), limite passa a ser 40
