@@ -131,7 +131,6 @@ describe("Test TypeChecks", () => {
       expect(isPolygonElement(arrow)).toBe(false);
     });
   });
-
   //-------CASOS DE TESTE CAIXA BRANCA-----
   //testar arrow e line, eles tem que passar
   describe("Test isLinearElement", () => {
@@ -159,6 +158,42 @@ describe("Test TypeChecks", () => {
       expect(isLinearElement(null)).toBe(false);
       expect(isLinearElement(undefined)).toBe(false);
     });
+  });
+});
+
+//----------CASOS DE TESTE CAIXA PRETA------------
+describe("isLinearElement - caixa-preta", () => {
+  // CT01: arrow pertence à classe linear e deve retornar true
+  it("should return true for arrow elements", () => {
+    const element = API.createElement({ type: "arrow" });
+    expect(isLinearElement(element)).toBe(true);
+  });
+
+  // CT02: line pertence à classe linear e deve retornar true
+  it("should return true for line elements", () => {
+    const element = API.createElement({ type: "line" });
+    expect(isLinearElement(element)).toBe(true);
+  });
+
+  // CT03-CT06: estes tipos válidos devem retornar false.
+  it("should return false for non-linear element types", () => {
+    const elements = [
+      API.createElement({ type: "rectangle" }),
+      API.createElement({ type: "ellipse" }),
+      API.createElement({ type: "text", text: "text" }),
+      API.createElement({ type: "freedraw" }),
+    ];
+
+    for (const element of elements) {
+      expect(isLinearElement(element)).toBe(false);
+    }
+  });
+
+  // CT07-CT09: entradas nulas ou ausentes devem retornar false
+  it("should return false for nullish or omitted input", () => {
+    expect(isLinearElement(null)).toBe(false);
+    expect(isLinearElement(undefined)).toBe(false);
+    expect(isLinearElement()).toBe(false);
   });
 });
 
