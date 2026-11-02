@@ -90,7 +90,7 @@ const extractEdges = (
 
   for (const statement of statements) {
     if (statement.includes("-->")) {
-      const [source, target] = statement.split(" --> ");
+      const [source, target] = statement.split("-->").map((s) => s.trim());
       if (isValidEdge(source, target, nodes)) {
         edges.push({ source, target });
       }
